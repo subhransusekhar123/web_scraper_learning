@@ -1,17 +1,19 @@
 import fs from 'fs';
 import csv from 'csv-parser'
 
-const results = [];
-const onlyCompany = [];
+
+
 
 
 const readCsv = (csvFile) => {
     const results = [];
     const onlyCompany = [];
+    
     fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (data) =>{ 
             results.push(data)
+            
         })
         .on('end', () => {
             console.log(results);
@@ -20,7 +22,7 @@ const readCsv = (csvFile) => {
                 onlyCompany.push(data.websiteName);
             })
 
-            console.log(results,onlyCompany)
+            // console.log(results,onlyCompany)
             return { onlyCompany, results }
         });
 }
