@@ -1,31 +1,27 @@
 import fs from 'fs';
-import csv from 'csv-parser'
-
-
-
-
+import csv from 'csv-parser';
 
 const readCsv = (csvFile) => {
-    const results = [];
-    const onlyCompany = [];
-    
-    fs.createReadStream(csvFile)
-        .pipe(csv())
-        .on('data', (data) =>{ 
-            results.push(data)
-            
-        })
-        .on('end', () => {
-            console.log(results);
+    return new Promise((resolve, reject) => {
+        const results = [];
+        const onlyCompany = [];
 
-            results.forEach((data) => {
-                onlyCompany.push(data.websiteName);
+        fs.createReadStream(csvFile)
+            .pipe(csv())
+            .on('data', (data) => {
+                results.push(data);
             })
+            .on('end', () => {
+                results.forEach((data) => {
+                    onlyCompany.push(data.websiteName);
+                });
 
-            // console.log(results,onlyCompany)
-            return { onlyCompany, results }
-        });
-}
+                resolve({ onlyCompany, results });
+            })
+            .on('error', (error) => {
+                reject(error);
+            });
+    });
+};
 
-export default readCsv ;
-
+export default readCsv;

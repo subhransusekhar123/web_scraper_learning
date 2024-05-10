@@ -21,7 +21,8 @@ async function dataAfterScrapingWebs(url) {
 
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        return ([Array.from(emails),url])
+        return ([ Array.from(emails) , url ])
+        
     } catch (error) {
 
         if (error.response) {

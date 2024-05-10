@@ -19,4 +19,4 @@ const websites = new mongoose.Schema({
 const websiteModel = mongoose.model('websites', websites);
 
 
-module.exports = websiteModel;
+export default websiteModel;
