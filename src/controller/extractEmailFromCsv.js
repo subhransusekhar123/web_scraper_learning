@@ -1,5 +1,6 @@
 import getTime from "../../newIndex.js";
 import websiteModel from "../model/websiteModel.js";
+import convertObjectToCsv from "../utils/convertObjecttoCsv.js";
 import readCsv from "../utils/readCsv.js";
 import dataAfterScrapingWebs from "../utils/scrapWebsite.js";
 import processStrings from "../utils/validUrl.js";
@@ -16,6 +17,7 @@ const extractEmailFromUrl = async (req, res) => {
 
         let data;
         let saveData;
+        let arrayofEmailsAndWebsiteName = [];
 
         console.log(req.file, "extractEmailFromUrl")
         const csvFile = req.file.path;
@@ -32,14 +34,24 @@ const extractEmailFromUrl = async (req, res) => {
                     })
 
                     saveData = await allwebsitesName.save();
-                    console.log(saveData)
+                    // console.log(saveData)
                     for (let i = 0; i < data.length; i++) {
                         await dataAfterScrapingWebs(data[i])
-                            .then((data) => console.log(data))
+                            .then((data) => {
+                                // console.log(data)
+                                arrayofEmailsAndWebsiteName.push(data)
+
+                            })
                             .catch((err) => console.log(err))
                     }
 
-                 getTime()
+                    console.log(arrayofEmailsAndWebsiteName, "arrayofEmailsAndWebsiteName")
+                    convertObjectToCsv(arrayofEmailsAndWebsiteName)
+                        .then((data) => console.log('done buddy', data.toString()))
+                        .catch((err) => console.log(err))
+
+
+                    getTime()
 
                 }) //this is just to add https to all the data
 
